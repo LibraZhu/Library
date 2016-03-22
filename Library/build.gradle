@@ -46,7 +46,7 @@ def siteUrl = 'https://github.com/LibraZhu/Library'
 // 项目的主页地址，我这里是我的PickerView项目在github的链接地址
 def gitUrl = 'https://github.com/LibraZhu/Library.git'
 // 项目 git 地址，我这里同样是用Github上的git地址
-version = "1.0.0"
+version = "0.0.1"
 group = "com.github.libra" // 组名称，这个相当于依赖的时候 compile 'com.bigkoo:pickerview:1
 // .0.1'
 // “:”号前面的前缀
@@ -54,7 +54,7 @@ group = "com.github.libra" // 组名称，这个相当于依赖的时候 compile
 install {
     repositories.mavenInstaller {
         // This generates POM.xml with proper parameters
-        pom { 
+        pom {
             project {
                 packaging 'aar'
                 name 'Library For libra' // 标题
@@ -92,15 +92,17 @@ task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath +=
             project.files(android.getBootClasspath().join(File.pathSeparator))
+    destinationDir = file("../javadoc/")
+    failOnError false
 }
 
-//task javadocJar(type: Jar, dependsOn: javadoc) {
-//    classifier = 'javadoc'
-//    from javadoc.destinationDir
-//}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
 
 artifacts {
-    //    archives javadocJar
+    archives javadocJar
     archives sourcesJar
 }
 
