@@ -54,7 +54,7 @@ group = "com.github.libra" // 组名称，这个相当于依赖的时候 compile
 install {
     repositories.mavenInstaller {
         // This generates POM.xml with proper parameters
-        pom {
+        pom { 
             project {
                 packaging 'aar'
                 name 'Library For libra' // 标题
