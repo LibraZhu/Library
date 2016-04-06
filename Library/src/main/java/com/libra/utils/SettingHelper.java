@@ -11,7 +11,6 @@ public class SettingHelper {
 
 
     private SettingHelper() {
-
     }
 
 

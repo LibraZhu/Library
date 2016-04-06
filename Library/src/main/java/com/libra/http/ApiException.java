@@ -115,6 +115,6 @@ public class ApiException extends Exception {
         else if (e instanceof SocketException) {
             return new ApiException(TYPE_SOCKET, 0, e);
         }
-        return new ApiException(TYPE_HTTP_ERROR, 0, e);
+        return new ApiException(TYPE_HttpResponseException, 0, e);
     }
 }

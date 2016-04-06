@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Spinner;
+import com.libra.BaseApp;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -522,15 +523,70 @@ public class AppUtil {
         return false;
     }
 
-
+    /**
+     * dp转px
+     *
+     * @param dipValue dp
+     * @return int
+     */
     public static int dip2px(Context context, float dipValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
+        final float scale = BaseApp.getInstance()
+                                   .getResources()
+                                   .getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
     }
 
-
+    /**
+     * px转dip
+     *
+     * @param pxValue px
+     * @return int
+     */
     public static int px2dip(Context context, float pxValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
+        final float scale = BaseApp.getInstance()
+                                   .getResources()
+                                   .getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
+
+
+    /**
+     * 获取版本名称
+     *
+     * @return String
+     */
+    public static String getAppVersionNumber() {
+        String versionName;
+        try {
+            PackageManager packageManager = BaseApp.getInstance()
+                                                   .getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo(
+                    BaseApp.getInstance().getPackageName(), 0);
+            versionName = packageInfo.versionName;
+        } catch (Exception e) {
+            versionName = "";
+        }
+        return versionName;
+    }
+
+
+    /**
+     * 获取指定应用程序的版本号
+     *
+     * @return String
+     */
+    public static String getAppVersionCode() {
+        String versionCode;
+        try {
+            PackageManager packageManager = BaseApp.getInstance()
+                                                   .getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo(
+                    BaseApp.getInstance().getPackageName(), 0);
+            versionCode = Integer.toString(packageInfo.versionCode);
+        } catch (Exception e) {
+            versionCode = "";
+        }
+        return versionCode;
+    }
+    
 }

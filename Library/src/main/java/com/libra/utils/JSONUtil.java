@@ -10,25 +10,29 @@ import java.lang.reflect.Type;
  */
 public class JSONUtil {
 
-    private static Gson gson = new GsonBuilder().excludeFieldsWithModifiers(Modifier.STATIC, Modifier.TRANSIENT).create();
+    private static Gson gson = new GsonBuilder().excludeFieldsWithModifiers(
+            Modifier.STATIC, Modifier.TRANSIENT).create();
 
-    public static String toJson(Object o){
+
+    public static String toJson(Object o) {
         return gson.toJson(o);
     }
 
-    public static <T> T fromJson(String json,Class<T> classOfT){
+
+    public static <T> T fromJson(String json, Class<T> classOfT) {
         try {
             return gson.fromJson(json, classOfT);
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
 
+
     public static <T> T fromJson(String json, Type typeOfT) {
-        try{
+        try {
             return gson.fromJson(json, typeOfT);
-        }catch (Exception e){
-            return  null;
+        } catch (Exception e) {
+            return null;
         }
     }
 }

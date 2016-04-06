@@ -1,7 +1,8 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.Base"
+        parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="actionMenuTextColor">@android:color/white</item>
         <item name="actionMenuTextAppearance">
@@ -23,8 +24,19 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="PermissionActivityTheme"
+        parent="AppTheme.Base">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
     <style name="BB_BottomBarItem_Fixed">
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:background">
+            ?attr/selectableItemBackgroundBorderless
+        </item>
         <item name="android:orientation">vertical</item>
         <item name="android:gravity">bottom|center_horizontal</item>
         <item name="android:layout_width">wrap_content</item>
@@ -35,14 +47,17 @@
         <item name="android:paddingRight">12dp</item>
     </style>
 
-    <style name="BB_BottomBarItem_Fixed.Title" parent="TextAppearance.AppCompat.Body1">
+    <style name="BB_BottomBarItem_Fixed.Title"
+        parent="TextAppearance.AppCompat.Body1">
         <item name="android:textSize">14sp</item>
         <item name="android:singleLine">true</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
 
     <style name="BB_BottomBarItem_Shifting">
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:background">
+            ?attr/selectableItemBackgroundBorderless
+        </item>
         <item name="android:orientation">vertical</item>
         <item name="android:gravity">bottom|center_horizontal</item>
         <item name="android:layout_width">wrap_content</item>
@@ -50,17 +65,21 @@
         <item name="android:paddingTop">16dp</item>
     </style>
 
-    <style name="BB_BottomBarItem_Shifting.Title" parent="BB_BottomBarItem_Fixed.Title">
+    <style name="BB_BottomBarItem_Shifting.Title"
+        parent="BB_BottomBarItem_Fixed.Title">
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
     <style name="BB_BottomBarItem_Tablet">
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:background">
+            ?attr/selectableItemBackgroundBorderless
+        </item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="BB_BottomBarBadge_Text" parent="TextAppearance.AppCompat.Body2">
+    <style name="BB_BottomBarBadge_Text"
+        parent="TextAppearance.AppCompat.Body2">
         <item name="android:textColor">#FFFFFF</item>
     </style>
 </resources>

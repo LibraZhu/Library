@@ -135,25 +135,22 @@ public class UIUtils {
         builder.setView(convertView);
         builder.setTitle("请选择");
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        StringBuffer sb = new StringBuffer();
-                        sb.append(String.format("%d-%02d-%02d",
-                                datePicker.getYear(), datePicker.getMonth() + 1,
-                                datePicker.getDayOfMonth()));
-                        view.setText(sb);
-                        if (listener != null) {
-                            listener.onClick(dialog, which);
-                        }
-                        dialog.dismiss();
-                    }
-                });
+            @Override public void onClick(DialogInterface dialog, int which) {
+                StringBuffer sb = new StringBuffer();
+                sb.append(String.format("%d-%02d-%02d", datePicker.getYear(),
+                        datePicker.getMonth() + 1, datePicker.getDayOfMonth()));
+                view.setText(sb);
+                if (listener != null) {
+                    listener.onClick(dialog, which);
+                }
+                dialog.dismiss();
+            }
+        });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+            @Override public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
         builder.create().show();
     }
 
