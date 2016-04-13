@@ -19,11 +19,16 @@ public abstract class RecyclerViewModel extends ViewModel {
     }
 
 
+    public void setStartPage() {
+        this.currentPage = 1;
+    }
+
+
     /**
      * 刷新
      */
     public void onRefresh() {
-        currentPage = 1;
+        setStartPage();
         fetchData();
     }
 
@@ -39,11 +44,16 @@ public abstract class RecyclerViewModel extends ViewModel {
     /**
      * 判断是否还能加载
      */
-    public void loadComplete() {
-        currentPage++;
-        currentCount = mAdapter.getCount();
-        if (totalCount <= currentCount) {
-            mAdapter.stopMore();
+    public void loadComplete(boolean error) {
+        if (!error) {
+            currentPage++;
+            currentCount = mAdapter.getCount();
+            if (totalCount <= currentCount) {
+                mAdapter.stopMore();
+            }
+        }
+        else {
+            mAdapter.pauseMore();
         }
     }
 

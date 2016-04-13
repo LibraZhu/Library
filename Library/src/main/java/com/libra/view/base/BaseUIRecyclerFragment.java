@@ -4,30 +4,31 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.jude.easyrecyclerview.EasyRecyclerView;
-import com.jude.easyrecyclerview.adapter.BaseViewHolder;
-import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.libra.R;
+import com.libra.uirecyclerView.OnLoadMoreListener;
+import com.libra.uirecyclerView.OnRefreshListener;
+import com.libra.uirecyclerView.UIRecycleViewAdapter;
+import com.libra.uirecyclerView.UIRecyclerView;
+import com.libra.uirecyclerView.UIViewHolder;
 import com.libra.view.widget.RecycleViewDivider;
-import com.libra.viewmodel.RecyclerViewModel;
+import com.libra.viewmodel.UIRecyclerViewModel;
 
 /**
  * Created by libra on 16/3/8 下午2:42.
  */
-public abstract class BaseRecyclerFragment<VM extends RecyclerViewModel>
+public abstract class BaseUIRecyclerFragment<VM extends UIRecyclerViewModel>
         extends BaseFragment
-        implements RecyclerArrayAdapter.OnItemClickListener,
-        RecyclerArrayAdapter.OnLoadMoreListener,
-        SwipeRefreshLayout.OnRefreshListener {
-    protected EasyRecyclerView mEasyRecyclerView;
-    protected RecyclerArrayAdapter adapter;
+        implements UIRecycleViewAdapter.OnItemClickListener,
+        OnRefreshListener,
+        OnLoadMoreListener {
+    protected UIRecyclerView mUIRecyclerView;
+    protected UIRecycleViewAdapter adapter;
 
     private VM viewModel;
 
@@ -49,19 +50,20 @@ public abstract class BaseRecyclerFragment<VM extends RecyclerViewModel>
      * 初始化RecyclerView
      */
     protected void initRecyclerView(View view) {
-        mEasyRecyclerView = $(view, R.id.recyclerView);
+        mUIRecyclerView = $(view, R.id.recyclerView);
         //默认LinearLayoutManager
-        mEasyRecyclerView.setLayoutManager(
+        mUIRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getActivity()));
 
-        adapter = new RecyclerArrayAdapter(getActivity()) {
+        adapter = new UIRecycleViewAdapter(getActivity()) {
             @Override
-            public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
+            public UIViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
                 return createHolder(parent, viewType);
             }
         };
-        mEasyRecyclerView.setAdapter(adapter);
+        mUIRecyclerView.setIAdapter(adapter);
         getViewModel().mAdapter = adapter;
+        getViewModel().mUIRecyclerView = mUIRecyclerView;
     }
 
 
@@ -69,11 +71,9 @@ public abstract class BaseRecyclerFragment<VM extends RecyclerViewModel>
      * 添加EasyRecyclerView divide线
      */
     protected void addItemDecoration() {
-        mEasyRecyclerView.addItemDecoration(
-                new RecycleViewDivider(getActivity(),
-                        LinearLayoutManager.HORIZONTAL, 2,
-                        ContextCompat.getColor(getActivity(),
-                                R.color.md_grey_300)));
+        mUIRecyclerView.addItemDecoration(new RecycleViewDivider(getActivity(),
+                LinearLayoutManager.HORIZONTAL, 2,
+                ContextCompat.getColor(getActivity(), R.color.md_grey_300)));
     }
 
 
@@ -91,7 +91,24 @@ public abstract class BaseRecyclerFragment<VM extends RecyclerViewModel>
      * 添加刷新
      */
     protected void addRefresh() {
-        mEasyRecyclerView.setRefreshListener(this);
+        mUIRecyclerView.setRefreshHeaderView(
+                R.layout.layout_uirecyclerview_classic_refresh_header_view);
+        mUIRecyclerView.setRefreshEnabled(true);
+        mUIRecyclerView.setOnRefreshListener(this);
+    }
+
+
+    /**
+     * 添加刷新
+     *
+     * @param resId 自定义
+     */
+    protected void addRefresh(int resId) {
+        if (resId != 1) {
+            mUIRecyclerView.setRefreshHeaderView(resId);
+        }
+        mUIRecyclerView.setRefreshEnabled(true);
+        mUIRecyclerView.setOnRefreshListener(this);
     }
 
 
@@ -99,17 +116,24 @@ public abstract class BaseRecyclerFragment<VM extends RecyclerViewModel>
      * 添加加载更多
      */
     protected void addLoadMore() {
-        if (adapter != null) {
-            adapter.setMore(R.layout.view_more, this);
-            adapter.setNoMore(R.layout.view_nomore);
+        mUIRecyclerView.setLoadMoreFooterView(
+                R.layout.layout_uirecyclerview_load_more_footer_view);
+        mUIRecyclerView.setLoadMoreEnabled(true);
+        mUIRecyclerView.setOnLoadMoreListener(this);
+    }
 
-            adapter.setError(R.layout.view_error)
-                   .setOnClickListener(new View.OnClickListener() {
-                       @Override public void onClick(View v) {
-                           adapter.resumeMore();
-                       }
-                   });
+
+    /**
+     * 添加加载更多
+     *
+     * @param resId 自定义
+     */
+    protected void addLoadMore(int resId) {
+        if (resId != 1) {
+            mUIRecyclerView.setLoadMoreFooterView(resId);
         }
+        mUIRecyclerView.setLoadMoreEnabled(true);
+        mUIRecyclerView.setOnLoadMoreListener(this);
     }
 
 
@@ -121,39 +145,28 @@ public abstract class BaseRecyclerFragment<VM extends RecyclerViewModel>
     protected void setGridLayoutManager(int spanCount) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(
                 getActivity(), spanCount);
-        if (adapter != null) {
-            gridLayoutManager.setSpanSizeLookup(
-                    adapter.obtainGridSpanSizeLookUp(spanCount));
-        }
-        else {
-            throw new IllegalArgumentException("please init adapter before");
-        }
-        mEasyRecyclerView.setLayoutManager(gridLayoutManager);
+        mUIRecyclerView.setLayoutManager(gridLayoutManager);
     }
 
 
     protected void setLayoutManager(RecyclerView.LayoutManager manager) {
-        mEasyRecyclerView.setLayoutManager(manager);
+        mUIRecyclerView.setLayoutManager(manager);
     }
 
 
     /**
      * 添加header
      */
-    protected void addHeader(RecyclerArrayAdapter.ItemView itemView) {
-        if (this.adapter != null) {
-            this.adapter.addHeader(itemView);
-        }
+    protected void addHeader(View headerView) {
+        mUIRecyclerView.addHeaderView(headerView);
     }
 
 
     /**
      * 添加footer
      */
-    protected void addFooter(RecyclerArrayAdapter.ItemView itemView) {
-        if (this.adapter != null) {
-            this.adapter.addFooter(itemView);
-        }
+    protected void addFooter(View footerView) {
+        mUIRecyclerView.addFooterView(footerView);
     }
 
 
@@ -168,8 +181,8 @@ public abstract class BaseRecyclerFragment<VM extends RecyclerViewModel>
     /**
      * onLoadMore 回调，事件传递给viewmodel处理
      */
-    @Override public void onLoadMore() {
-        viewModel.onLoadMore();
+    @Override public void onLoadMore(View loadMoreView) {
+        viewModel.onLoadMore(loadMoreView);
     }
 
 
@@ -177,11 +190,11 @@ public abstract class BaseRecyclerFragment<VM extends RecyclerViewModel>
      * onRefresh 回调，事件传递给viewmodel处理
      */
     @Override public void onRefresh() {
-        viewModel.onRefresh();
+        viewModel.onRefresh(mUIRecyclerView.getLoadMoreFooterView());
     }
 
 
-    public abstract BaseViewHolder createHolder(ViewGroup parent, int viewType);
+    public abstract UIViewHolder createHolder(ViewGroup parent, int viewType);
 
 
     @Nullable @Override

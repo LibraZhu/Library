@@ -13,4 +13,52 @@ public abstract class ViewModel extends BaseObservable {
     public ViewModel(Context context) {
         this.context = context;
     }
+
+
+    /**
+     * activity onCreate()
+     */
+    public void onCreate() {
+
+    }
+
+
+    /**
+     * activity onStart()
+     */
+    public void onStart() {
+
+    }
+
+
+    /**
+     * activity onStop()
+     */
+    public void onStop() {
+
+    }
+
+
+    /**
+     * activity onDestroy()
+     */
+    public void onDestroy() {
+
+    }
+
+
+    /**
+     * fragment onCreateView
+     */
+    public void onCreateView() {
+
+    }
+
+
+    /**
+     * fragment onDestroyView
+     */
+    public void onDestroyView() {
+
+    }
 }

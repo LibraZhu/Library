@@ -1,5 +1,6 @@
 package com.libra.view.base;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -56,7 +57,8 @@ public abstract class BaseRecyclerActivity<VM extends RecyclerViewModel>
                 return createHolder(parent, viewType);
             }
         };
-        mEasyRecyclerView.setAdapterWithProgress(adapter);
+        mEasyRecyclerView.setAdapter(adapter);
+        getViewModel().mAdapter = adapter;
     }
 
 
@@ -83,7 +85,7 @@ public abstract class BaseRecyclerActivity<VM extends RecyclerViewModel>
     /**
      * 添加刷新
      */
-    protected void addRefreshing() {
+    protected void addRefresh() {
         mEasyRecyclerView.setRefreshListener(this);
     }
 
@@ -175,4 +177,28 @@ public abstract class BaseRecyclerActivity<VM extends RecyclerViewModel>
 
 
     public abstract BaseViewHolder createHolder(ViewGroup parent, int viewType);
+
+
+    @Override protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getViewModel().onCreate();
+    }
+
+
+    @Override protected void onStart() {
+        super.onStart();
+        getViewModel().onStart();
+    }
+
+
+    @Override protected void onStop() {
+        super.onStop();
+        getViewModel().onStop();
+    }
+
+
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        getViewModel().onDestroy();
+    }
 }

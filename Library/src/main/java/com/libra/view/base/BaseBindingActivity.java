@@ -1,6 +1,7 @@
 package com.libra.view.base;
 
 import android.databinding.ViewDataBinding;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import com.libra.viewmodel.ViewModel;
 
@@ -36,5 +37,29 @@ public abstract class BaseBindingActivity<VM extends ViewModel, B extends ViewDa
             throw new NullPointerException("You should setBinding first!");
         }
         return binding;
+    }
+
+
+    @Override protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getViewModel().onCreate();
+    }
+
+
+    @Override protected void onStart() {
+        super.onStart();
+        getViewModel().onStart();
+    }
+
+
+    @Override protected void onStop() {
+        super.onStop();
+        getViewModel().onStop();
+    }
+
+
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        getViewModel().onDestroy();
     }
 }

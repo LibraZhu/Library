@@ -1,7 +1,12 @@
 package com.libra.view.base;
 
 import android.databinding.ViewDataBinding;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import com.libra.viewmodel.ViewModel;
 
 /**
@@ -36,5 +41,32 @@ public abstract class BaseBindingFragment<VM extends ViewModel, B extends ViewDa
             throw new NullPointerException("You should setBinding first!");
         }
         return binding;
+    }
+
+
+    @Nullable @Override
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        getViewModel().onCreateView();
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        getViewModel().onDestroyView();
+    }
+
+
+    @Override public void onStart() {
+        super.onStart();
+        getViewModel().onStart();
+    }
+
+
+    @Override public void onStop() {
+        super.onStop();
+        getViewModel().onStop();
     }
 }
