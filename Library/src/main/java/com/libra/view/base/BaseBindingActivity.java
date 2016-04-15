@@ -40,8 +40,12 @@ public abstract class BaseBindingActivity<VM extends ViewModel, B extends ViewDa
     }
 
 
+    public abstract void onCreateBind();
+
+
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        onCreateBind();
         getViewModel().onCreate();
     }
 

@@ -59,6 +59,7 @@ public abstract class BaseRecyclerActivity<VM extends RecyclerViewModel>
         };
         mEasyRecyclerView.setAdapter(adapter);
         getViewModel().mAdapter = adapter;
+        getViewModel().onCreate();
     }
 
 
@@ -181,7 +182,6 @@ public abstract class BaseRecyclerActivity<VM extends RecyclerViewModel>
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getViewModel().onCreate();
     }
 
 
