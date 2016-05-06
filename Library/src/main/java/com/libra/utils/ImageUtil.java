@@ -1373,6 +1373,63 @@ public class ImageUtil {
     }
 
 
+    public static void compressPic(File pic, File destPic, int compressSize) {
+        String picPath = pic.getAbsolutePath();
+        if (pic.length() / 1024 > compressSize) {// 如果原图大于compressSize则进行缩放压缩
+            Bitmap bitmap = null;
+            Options options = new Options();
+            options.inJustDecodeBounds = false;
+            options.inPreferredConfig = Config.RGB_565;
+            options.inPurgeable = true;
+            options.inInputShareable = true;
+            options.inDither = false;
+            options.inSampleSize = 2;// 宽高缩小一倍
+            try {
+                FileInputStream fis = new FileInputStream(picPath);
+                bitmap = BitmapFactory.decodeStream(fis, null, options);
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+            int exifRotation = ImageUtil.readPictureDegree(picPath);
+            if (exifRotation != 0) {
+                Matrix mtx = new Matrix();
+                mtx.postRotate(exifRotation);
+                Bitmap adjustedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
+                        bitmap.getWidth(), bitmap.getHeight(), mtx, true);
+                if (adjustedBitmap != bitmap) {
+                    bitmap.recycle();
+                    bitmap = adjustedBitmap;
+                }
+            }
+            // 质量压缩到100K以下
+            int quality = 100;
+            try {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(CompressFormat.JPEG, quality, baos);
+                while (baos.toByteArray().length / 1024 >
+                        compressSize) { // 循环判断如果压缩后图片是否大于compressSize,大于继续压缩
+                    baos.reset();// 重置baos即清空baos
+                    quality -= 10;// 每次都减少10
+                    bitmap.compress(CompressFormat.JPEG, quality, baos);
+                }
+                FileOutputStream stream = new FileOutputStream(destPic);
+                baos.writeTo(stream);
+                baos.flush();
+                baos.close();
+                stream.close();
+                bitmap.recycle();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } catch (OutOfMemoryError e) {
+                e.printStackTrace();
+            }
+        }
+        else {// 如果原图小于compressSize则不进行缩放压缩
+            FileUtil.copyFile(picPath, destPic.getAbsolutePath());
+        }
+    }
+
+
     /**
      * 压缩图片：宽高缩小一倍，质量压缩到500K以下
      */

@@ -13,7 +13,19 @@ android {
         versionName "1.0"
     }
     buildTypes {
+        debug {
+            // 显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            zipAlignEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.debug
+            //混淆
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro'
+        }
         release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro'
@@ -38,7 +50,7 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.2'
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.jude:easyrecyclerview:3.4.3'
+    compile 'com.jude:easyrecyclerview:3.5.0'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
 }
@@ -47,7 +59,7 @@ def siteUrl = 'https://github.com/LibraZhu/Library'
 // 项目的主页地址，我这里是我的PickerView项目在github的链接地址
 def gitUrl = 'https://github.com/LibraZhu/Library.git'
 // 项目 git 地址，我这里同样是用Github上的git地址
-version = "0.0.7"
+version = "0.2.3"
 group = "com.github.libra" // 组名称，这个相当于依赖的时候 compile 'com.bigkoo:pickerview:1
 // .0.1'
 // “:”号前面的前缀

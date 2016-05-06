@@ -3,13 +3,11 @@ package com.libra.uirecyclerView;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -166,19 +164,6 @@ public class UIRecyclerView extends RecyclerView {
     }
 
 
-    public void setRefreshHeaderView(@LayoutRes int refreshHeaderLayoutRes) {
-        ensureRefreshHeaderContainer();
-        final View refreshHeader = LayoutInflater.from(getContext())
-                                                 .inflate(
-                                                         refreshHeaderLayoutRes,
-                                                         mRefreshHeaderContainer,
-                                                         false);
-        if (refreshHeader != null) {
-            setRefreshHeaderView(refreshHeader);
-        }
-    }
-
-
     public void setLoadMoreFooterView(View loadMoreFooterView) {
         if (mLoadMoreFooterView != null) {
             removeLoadMoreFooterView();
@@ -187,19 +172,6 @@ public class UIRecyclerView extends RecyclerView {
             this.mLoadMoreFooterView = loadMoreFooterView;
             ensureLoadMoreFooterContainer();
             mLoadMoreFooterContainer.addView(loadMoreFooterView);
-        }
-    }
-
-
-    public void setLoadMoreFooterView(@LayoutRes int loadMoreFooterLayoutRes) {
-        ensureLoadMoreFooterContainer();
-        final View loadMoreFooter = LayoutInflater.from(getContext())
-                                                  .inflate(
-                                                          loadMoreFooterLayoutRes,
-                                                          mLoadMoreFooterContainer,
-                                                          false);
-        if (loadMoreFooter != null) {
-            setLoadMoreFooterView(loadMoreFooter);
         }
     }
 

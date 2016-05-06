@@ -10,6 +10,7 @@ import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
 public class GalleryViewPager extends ViewPager {
     public PhotoView mCurrentView;
     public OnPhotoTapListener listener;
+    public OnLongClickListener mLongClickListener;
 
 
     public GalleryViewPager(Context context) {
@@ -33,6 +34,11 @@ public class GalleryViewPager extends ViewPager {
 
     public void setOnPhotoTapListener(OnPhotoTapListener listener) {
         this.listener = listener;
+    }
+
+
+    public void setLongClickListener(OnLongClickListener longClickListener) {
+        mLongClickListener = longClickListener;
     }
 
 

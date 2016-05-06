@@ -24,6 +24,8 @@ public class FilePagerAdapter extends BasePagerAdapter {
         if (((GalleryViewPager) container).listener != null) {
             ((GalleryViewPager) container).mCurrentView.setOnPhotoTapListener(
                     ((GalleryViewPager) container).listener);
+            ((GalleryViewPager) container).mCurrentView.setOnLongClickListener(
+                    ((GalleryViewPager) container).mLongClickListener);
         }
     }
 

@@ -21,6 +21,8 @@ public abstract class AbsGalleryActivity extends BaseActivity {
 
     public static final String ACT_EXTRANAME_ISSHOWNUM = "isShowNum";
 
+    private View.OnLongClickListener mLongClickListener;
+
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +44,7 @@ public abstract class AbsGalleryActivity extends BaseActivity {
             mViewPager = (GalleryViewPager) findViewById(R.id.galleryviewpager);
             mViewPager.setOffscreenPageLimit(1);
             mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
-            mViewPager.setOnPageChangeListener(
+            mViewPager.addOnPageChangeListener(
                     new ViewPager.SimpleOnPageChangeListener() {
                         @Override public void onPageSelected(int position) {
                             super.onPageSelected(position);
@@ -56,9 +58,22 @@ public abstract class AbsGalleryActivity extends BaseActivity {
                             finish();
                         }
                     });
+            mViewPager.setLongClickListener(new View.OnLongClickListener() {
+                @Override public boolean onLongClick(View view) {
+                    if (mLongClickListener != null) {
+                        return mLongClickListener.onLongClick(view);
+                    }
+                    return false;
+                }
+            });
             setPageAdapter(items);
             mViewPager.setCurrentItem(position);
         }
+    }
+
+
+    public void setLongClickListener(View.OnLongClickListener longClickListener) {
+        mLongClickListener = longClickListener;
     }
 
 

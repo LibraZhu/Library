@@ -15,6 +15,7 @@ import com.libra.uirecyclerView.UIRecycleViewAdapter;
 import com.libra.uirecyclerView.UIRecyclerView;
 import com.libra.uirecyclerView.UIViewHolder;
 import com.libra.uirecyclerView.footer.LoadMoreFooterView;
+import com.libra.uirecyclerView.header.ClassicRefreshHeaderView;
 import com.libra.view.widget.RecycleViewDivider;
 import com.libra.viewmodel.UIRecyclerViewModel;
 
@@ -48,8 +49,8 @@ public abstract class BaseUIRecyclerActivity<VM extends UIRecyclerViewModel>
     /**
      * 初始化RecyclerView
      */
-    protected void initRecyclerView(View view) {
-        mUIRecyclerView = $(view, R.id.recyclerView);
+    protected void initRecyclerView() {
+        mUIRecyclerView = $(R.id.recyclerView);
         //默认LinearLayoutManager
         mUIRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -90,22 +91,7 @@ public abstract class BaseUIRecyclerActivity<VM extends UIRecyclerViewModel>
      * 添加刷新
      */
     protected void addRefresh() {
-        mUIRecyclerView.setRefreshHeaderView(
-                R.layout.layout_uirecyclerview_classic_refresh_header_view);
-        mUIRecyclerView.setRefreshEnabled(true);
-        mUIRecyclerView.setOnRefreshListener(this);
-    }
-
-
-    /**
-     * 添加刷新
-     *
-     * @param resId 自定义
-     */
-    protected void addRefresh(int resId) {
-        if (resId != 1) {
-            mUIRecyclerView.setRefreshHeaderView(resId);
-        }
+        mUIRecyclerView.setRefreshHeaderView(new ClassicRefreshHeaderView(this));
         mUIRecyclerView.setRefreshEnabled(true);
         mUIRecyclerView.setOnRefreshListener(this);
     }
@@ -115,10 +101,9 @@ public abstract class BaseUIRecyclerActivity<VM extends UIRecyclerViewModel>
      * 添加加载更多
      */
     protected void addLoadMore() {
-        mUIRecyclerView.setLoadMoreFooterView(
-                R.layout.layout_uirecyclerview_load_more_footer_view);
-        mUIRecyclerView.setLoadMoreEnabled(true);
+        mUIRecyclerView.setLoadMoreFooterView(new LoadMoreFooterView(this));
         mUIRecyclerView.setOnLoadMoreListener(this);
+        mUIRecyclerView.setLoadMoreEnabled(true);
         final LoadMoreFooterView loadMoreFooterView
                 = (LoadMoreFooterView) mUIRecyclerView.getLoadMoreFooterView();
         loadMoreFooterView.setOnRetryListener(
@@ -131,20 +116,6 @@ public abstract class BaseUIRecyclerActivity<VM extends UIRecyclerViewModel>
 
 
     /**
-     * 添加加载更多
-     *
-     * @param resId 自定义
-     */
-    protected void addLoadMore(int resId) {
-        if (resId != 1) {
-            mUIRecyclerView.setLoadMoreFooterView(resId);
-        }
-        mUIRecyclerView.setLoadMoreEnabled(true);
-        mUIRecyclerView.setOnLoadMoreListener(this);
-    }
-
-
-    /**
      * Grid模式的时候调用
      *
      * @param spanCount 列
@@ -152,6 +123,13 @@ public abstract class BaseUIRecyclerActivity<VM extends UIRecyclerViewModel>
     protected void setGridLayoutManager(int spanCount) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,
                 spanCount);
+        if (adapter != null) {
+            gridLayoutManager.setSpanSizeLookup(
+                    adapter.obtainGridSpanSizeLookUp(spanCount));
+        }
+        else {
+            throw new IllegalArgumentException("please init adapter before");
+        }
         mUIRecyclerView.setLayoutManager(gridLayoutManager);
     }
 

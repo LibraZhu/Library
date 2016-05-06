@@ -46,8 +46,8 @@ public abstract class BaseRecyclerActivity<VM extends RecyclerViewModel>
     /**
      * 初始化RecyclerView
      */
-    protected void initRecyclerView(View view) {
-        mEasyRecyclerView = $(view, R.id.recyclerView);
+    protected void initRecyclerView() {
+        mEasyRecyclerView = $(R.id.recyclerView);
         //默认LinearLayoutManager
         mEasyRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -59,6 +59,7 @@ public abstract class BaseRecyclerActivity<VM extends RecyclerViewModel>
         };
         mEasyRecyclerView.setAdapter(adapter);
         getViewModel().mAdapter = adapter;
+        getViewModel().mEasyRecyclerView = mEasyRecyclerView;
         getViewModel().onCreate();
     }
 
@@ -97,7 +98,7 @@ public abstract class BaseRecyclerActivity<VM extends RecyclerViewModel>
     protected void addLoadMore() {
         if (adapter != null) {
             adapter.setMore(R.layout.view_more, this);
-            adapter.setNoMore(R.layout.view_nomore);
+            //adapter.setNoMore(R.layout.view_nomore);
 
             adapter.setError(R.layout.view_error)
                    .setOnClickListener(new View.OnClickListener() {

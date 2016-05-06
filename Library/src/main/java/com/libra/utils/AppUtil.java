@@ -523,18 +523,20 @@ public class AppUtil {
         return false;
     }
 
+
     /**
      * dp转px
      *
      * @param dipValue dp
      * @return int
      */
-    public static int dip2px(Context context, float dipValue) {
+    public static int dip2px(float dipValue) {
         final float scale = BaseApp.getInstance()
                                    .getResources()
                                    .getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
     }
+
 
     /**
      * px转dip
@@ -542,7 +544,7 @@ public class AppUtil {
      * @param pxValue px
      * @return int
      */
-    public static int px2dip(Context context, float pxValue) {
+    public static int px2dip(float pxValue) {
         final float scale = BaseApp.getInstance()
                                    .getResources()
                                    .getDisplayMetrics().density;
@@ -588,5 +590,4 @@ public class AppUtil {
         }
         return versionCode;
     }
-    
 }

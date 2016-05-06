@@ -2,18 +2,21 @@ package com.libra.viewmodel;
 
 import android.content.Context;
 import android.view.View;
+import com.libra.R;
+import com.libra.http.ApiException;
 import com.libra.uirecyclerView.UIRecycleViewAdapter;
 import com.libra.uirecyclerView.UIRecyclerView;
 import com.libra.uirecyclerView.footer.LoadMoreFooterView;
+import com.libra.view.base.BaseActivity;
 
 /**
  * Created by libra on 16/3/9 上午9:58.
  */
 public abstract class UIRecyclerViewModel extends ViewModel {
 
-    private int currentPage = 1;
-    private long currentCount;
-    private long totalCount;
+    public int currentPage = 1;
+    public long currentCount;
+    public long totalCount;
     public UIRecycleViewAdapter mAdapter;
     public UIRecyclerView mUIRecyclerView;
 
@@ -34,8 +37,7 @@ public abstract class UIRecyclerViewModel extends ViewModel {
     public void onRefresh(View loadMoreFooterView) {
         setStartPage();
         fetchData();
-        if (loadMoreFooterView != null &&
-                loadMoreFooterView instanceof LoadMoreFooterView) {
+        if (loadMoreFooterView != null) {
             LoadMoreFooterView view = (LoadMoreFooterView) loadMoreFooterView;
             view.setStatus(LoadMoreFooterView.Status.GONE);
         }
@@ -46,12 +48,36 @@ public abstract class UIRecyclerViewModel extends ViewModel {
      * 加载更多
      */
     public void onLoadMore(View loadMoreFooterView) {
-        if (loadMoreFooterView != null &&
-                loadMoreFooterView instanceof LoadMoreFooterView) {
+        if (loadMoreFooterView != null) {
             LoadMoreFooterView view = (LoadMoreFooterView) loadMoreFooterView;
             if (view.canLoadMore() && mAdapter.getItemCount() > 0) {
                 view.setStatus(LoadMoreFooterView.Status.LOADING);
                 fetchData();
+            }
+        }
+    }
+
+
+    public void error(Throwable e) {
+        {
+            if (currentPage == 1) {
+                String errorMessage = context.getString(
+                        R.string.http_exception_error);
+                if (e != null) {
+                    if (e instanceof ApiException) {
+                        errorMessage = ((ApiException) e).getCause()
+                                                         .getMessage();
+                    }
+                    else {
+                        errorMessage = e.getMessage();
+                    }
+                }
+                ((BaseActivity) context).showShortToast(errorMessage);
+                refreshComplete();
+            }
+            else {
+                loadComplete(mUIRecyclerView.getLoadMoreFooterView(), true);
+                refreshComplete();
             }
         }
     }

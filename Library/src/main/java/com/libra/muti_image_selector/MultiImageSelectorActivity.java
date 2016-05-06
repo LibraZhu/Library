@@ -77,6 +77,7 @@ public class MultiImageSelectorActivity extends BaseActivity
         intent.putStringArrayListExtra(
                 MultiImageSelectorActivity.EXTRA_DEFAULT_SELECTED_LIST,
                 defaultDataArray);
+        activity.startActivityForResult(intent, REQUEST_CODE);
     }
 
 
