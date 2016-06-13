@@ -15,4 +15,8 @@
         android:id="@+id/loadingView"
         layout="@layout/view_more"/>
 
+    <FrameLayout
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </merge>

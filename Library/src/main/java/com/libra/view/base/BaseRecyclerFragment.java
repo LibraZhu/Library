@@ -102,7 +102,7 @@ public abstract class BaseRecyclerFragment<VM extends RecyclerViewModel>
     protected void addLoadMore() {
         if (adapter != null) {
             adapter.setMore(R.layout.view_more, this);
-            //adapter.setNoMore(R.layout.view_nomore);
+            adapter.setNoMore(R.layout.view_nomore);
 
             adapter.setError(R.layout.view_error)
                    .setOnClickListener(new View.OnClickListener() {

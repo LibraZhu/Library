@@ -1,6 +1,7 @@
 package com.libra.viewmodel;
 
 import android.content.Context;
+import android.os.Handler;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.libra.R;
@@ -26,6 +27,12 @@ public abstract class RecyclerViewModel extends ViewModel {
 
     public void setStartPage() {
         this.currentPage = 1;
+    }
+
+
+    public void autoRefresh() {
+        mEasyRecyclerView.setRefreshing(true);
+        onRefresh();
     }
 
 
@@ -72,9 +79,13 @@ public abstract class RecyclerViewModel extends ViewModel {
 
 
     public void refreshComplete() {
-        if (this.mEasyRecyclerView != null) {
-            this.mEasyRecyclerView.setRefreshing(false);
-        }
+        new Handler().postDelayed(new Runnable() {
+            @Override public void run() {
+                if (mEasyRecyclerView != null) {
+                    mEasyRecyclerView.setRefreshing(false);
+                }
+            }
+        }, 100);
     }
 
 

@@ -1,6 +1,7 @@
 package com.libra.viewmodel;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.View;
 import com.libra.R;
 import com.libra.http.ApiException;
@@ -28,6 +29,12 @@ public abstract class UIRecyclerViewModel extends ViewModel {
 
     public void setStartPage() {
         this.currentPage = 1;
+    }
+
+
+    public void autoRefresh() {
+        mUIRecyclerView.setRefreshing(true);
+        onRefresh(mUIRecyclerView.getLoadMoreFooterView());
     }
 
 
@@ -76,42 +83,60 @@ public abstract class UIRecyclerViewModel extends ViewModel {
                 refreshComplete();
             }
             else {
-                loadComplete(mUIRecyclerView.getLoadMoreFooterView(), true);
+                loadComplete(true);
                 refreshComplete();
             }
         }
     }
 
 
-    public void refreshComplete() {
-        if (mUIRecyclerView != null) {
-            mUIRecyclerView.setRefreshing(false);
+    public void empty() {
+        if (mUIRecyclerView.getLoadMoreFooterView() == null) {
+            return;
         }
+        if (currentPage == 1) {
+            ((LoadMoreFooterView) mUIRecyclerView.getLoadMoreFooterView()).setStatus(
+                    LoadMoreFooterView.Status.ENPTY);
+        }
+    }
+
+
+    public void refreshComplete() {
+        new Handler().postDelayed(new Runnable() {
+            @Override public void run() {
+                if (mUIRecyclerView != null) {
+                    mUIRecyclerView.setRefreshing(false);
+                }
+            }
+        }, 50);
     }
 
 
     /**
      * 判断是否还能加载
      */
-    public void loadComplete(View loadMoreFooterView, boolean error) {
+    public void loadComplete(boolean error) {
+        if (mUIRecyclerView.getLoadMoreFooterView() == null) {
+            return;
+        }
         if (!error) {
             currentPage++;
             currentCount = mAdapter.getItemCount();
             if (currentCount == 0) {
-                ((LoadMoreFooterView) loadMoreFooterView).setStatus(
+                ((LoadMoreFooterView) mUIRecyclerView.getLoadMoreFooterView()).setStatus(
                         LoadMoreFooterView.Status.GONE);
             }
             else if (totalCount <= currentCount) {
-                ((LoadMoreFooterView) loadMoreFooterView).setStatus(
+                ((LoadMoreFooterView) mUIRecyclerView.getLoadMoreFooterView()).setStatus(
                         LoadMoreFooterView.Status.THE_END);
             }
             else {
-                ((LoadMoreFooterView) loadMoreFooterView).setStatus(
+                ((LoadMoreFooterView) mUIRecyclerView.getLoadMoreFooterView()).setStatus(
                         LoadMoreFooterView.Status.GONE);
             }
         }
         else {
-            ((LoadMoreFooterView) loadMoreFooterView).setStatus(
+            ((LoadMoreFooterView) mUIRecyclerView.getLoadMoreFooterView()).setStatus(
                     LoadMoreFooterView.Status.ERROR);
         }
     }
