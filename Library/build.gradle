@@ -59,7 +59,7 @@ def siteUrl = 'https://github.com/LibraZhu/Library'
 // 项目的主页地址，我这里是我的PickerView项目在github的链接地址
 def gitUrl = 'https://github.com/LibraZhu/Library.git'
 // 项目 git 地址，我这里同样是用Github上的git地址
-version = "0.2.6"
+version = "0.2.8"
 group = "com.github.libra" // 组名称，这个相当于依赖的时候 compile 'com.bigkoo:pickerview:1
 // .0.1'
 // “:”号前面的前缀
