@@ -44,22 +44,22 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:design:23.2.1'
-    compile 'com.squareup.retrofit2:retrofit:2.0.2'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
-    compile 'io.reactivex:rxjava:1.1.5'
-    compile 'io.reactivex:rxandroid:1.2.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.jude:easyrecyclerview:3.5.6'
-    compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'io.reactivex:rxjava:1.1.7'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.google.code.gson:gson:2.7'
 }
 
 def siteUrl = 'https://github.com/LibraZhu/Library'
 // 项目的主页地址，我这里是我的PickerView项目在github的链接地址
 def gitUrl = 'https://github.com/LibraZhu/Library.git'
 // 项目 git 地址，我这里同样是用Github上的git地址
-version = "0.2.8"
+version = "0.4.0"
 group = "com.github.libra" // 组名称，这个相当于依赖的时候 compile 'com.bigkoo:pickerview:1
 // .0.1'
 // “:”号前面的前缀

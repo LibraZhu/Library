@@ -17,7 +17,8 @@ public class LoadMoreFooterView extends FrameLayout {
 
     private View mTheEndView;
 
-    private FrameLayout mEmptyView;
+    private FrameLayout mEmptyViewContainer;
+    private View mEmptyView;
 
     private OnRetryListener mOnRetryListener;
 
@@ -42,11 +43,12 @@ public class LoadMoreFooterView extends FrameLayout {
         mLoadingView = findViewById(R.id.loadingView);
         mErrorView = findViewById(R.id.errorView);
         mTheEndView = findViewById(R.id.theEndView);
-        mEmptyView = (FrameLayout) findViewById(R.id.emptyView);
+        mEmptyViewContainer = (FrameLayout) findViewById(R.id.emptyView);
         if (getEmptyLayoutID() != -1) {
-            View view = LayoutInflater.from(this.getContext())
-                                      .inflate(getEmptyLayoutID(), null, false);
-            mEmptyView.addView(view);
+            mEmptyView = LayoutInflater.from(this.getContext())
+                                       .inflate(getEmptyLayoutID(), null,
+                                               false);
+            mEmptyViewContainer.addView(mEmptyView);
         }
 
         mErrorView.setOnClickListener(new OnClickListener() {
@@ -58,6 +60,11 @@ public class LoadMoreFooterView extends FrameLayout {
         });
 
         setStatus(Status.GONE);
+    }
+
+
+    public View getEmptyView() {
+        return mEmptyView;
     }
 
 
@@ -93,34 +100,34 @@ public class LoadMoreFooterView extends FrameLayout {
                 mLoadingView.setVisibility(GONE);
                 mErrorView.setVisibility(GONE);
                 mTheEndView.setVisibility(GONE);
-                mEmptyView.setVisibility(GONE);
+                mEmptyViewContainer.setVisibility(GONE);
                 break;
 
             case LOADING:
                 mLoadingView.setVisibility(VISIBLE);
                 mErrorView.setVisibility(GONE);
                 mTheEndView.setVisibility(GONE);
-                mEmptyView.setVisibility(GONE);
+                mEmptyViewContainer.setVisibility(GONE);
                 break;
 
             case ERROR:
                 mLoadingView.setVisibility(GONE);
                 mErrorView.setVisibility(VISIBLE);
                 mTheEndView.setVisibility(GONE);
-                mEmptyView.setVisibility(GONE);
+                mEmptyViewContainer.setVisibility(GONE);
                 break;
 
             case THE_END:
                 mLoadingView.setVisibility(GONE);
                 mErrorView.setVisibility(GONE);
                 mTheEndView.setVisibility(VISIBLE);
-                mEmptyView.setVisibility(GONE);
+                mEmptyViewContainer.setVisibility(GONE);
                 break;
             case ENPTY:
                 mLoadingView.setVisibility(GONE);
                 mErrorView.setVisibility(GONE);
                 mTheEndView.setVisibility(GONE);
-                mEmptyView.setVisibility(VISIBLE);
+                mEmptyViewContainer.setVisibility(VISIBLE);
                 break;
         }
     }

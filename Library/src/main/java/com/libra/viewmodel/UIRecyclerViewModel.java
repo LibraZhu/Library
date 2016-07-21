@@ -112,6 +112,30 @@ public abstract class UIRecyclerViewModel extends ViewModel {
     }
 
 
+    public void loadComplete(View loadMoreFooterView, boolean error) {
+        if (!error) {
+            currentCount = mAdapter.getItemCount();
+            if (currentCount == 0) {
+                ((LoadMoreFooterView) loadMoreFooterView).setStatus(
+                        LoadMoreFooterView.Status.GONE);
+            }
+            else if (totalCount <= currentCount) {
+                ((LoadMoreFooterView) loadMoreFooterView).setStatus(
+                        LoadMoreFooterView.Status.THE_END);
+            }
+            else {
+                currentPage++;
+                ((LoadMoreFooterView) loadMoreFooterView).setStatus(
+                        LoadMoreFooterView.Status.GONE);
+            }
+        }
+        else {
+            ((LoadMoreFooterView) loadMoreFooterView).setStatus(
+                    LoadMoreFooterView.Status.ERROR);
+        }
+    }
+
+
     /**
      * 判断是否还能加载
      */
@@ -120,7 +144,6 @@ public abstract class UIRecyclerViewModel extends ViewModel {
             return;
         }
         if (!error) {
-            currentPage++;
             currentCount = mAdapter.getItemCount();
             if (currentCount == 0) {
                 ((LoadMoreFooterView) mUIRecyclerView.getLoadMoreFooterView()).setStatus(
@@ -131,6 +154,7 @@ public abstract class UIRecyclerViewModel extends ViewModel {
                         LoadMoreFooterView.Status.THE_END);
             }
             else {
+                currentPage++;
                 ((LoadMoreFooterView) mUIRecyclerView.getLoadMoreFooterView()).setStatus(
                         LoadMoreFooterView.Status.GONE);
             }

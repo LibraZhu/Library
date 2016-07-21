@@ -24,7 +24,6 @@ public class WrapperAdapter
     private final LinearLayout mHeaderContainer;
 
     private final LinearLayout mFooterContainer;
-
     private RecyclerView.AdapterDataObserver mObserver
             = new RecyclerView.AdapterDataObserver() {
         @Override public void onChanged() {

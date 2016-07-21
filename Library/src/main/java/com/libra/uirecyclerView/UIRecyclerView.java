@@ -3,11 +3,13 @@ package com.libra.uirecyclerView;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,8 @@ public class UIRecyclerView extends RecyclerView {
     private static final boolean DEBUG = false;
 
     private int mStatus;
+
+    private boolean mIsAutoRefreshing;
 
     private boolean mRefreshEnabled;
 
@@ -70,6 +74,7 @@ public class UIRecyclerView extends RecyclerView {
     public UIRecyclerView(Context context,
                           @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+
         setStatus(STATUS_DEFAULT);
     }
 
@@ -130,12 +135,16 @@ public class UIRecyclerView extends RecyclerView {
 
     public void setRefreshing(boolean refreshing) {
         if (mStatus == STATUS_DEFAULT && refreshing) {
+            this.mIsAutoRefreshing = true;
+            setStatus(STATUS_SWIPING_TO_REFRESH);
             startScrollDefaultStatusToRefreshingStatus();
         }
         else if (mStatus == STATUS_REFRESHING && !refreshing) {
+            this.mIsAutoRefreshing = false;
             startScrollRefreshingStatusToDefaultStatus();
         }
         else {
+            this.mIsAutoRefreshing = false;
             Log.e(TAG, "isRefresh = " + refreshing + " current status = " +
                     mStatus);
         }
@@ -164,6 +173,19 @@ public class UIRecyclerView extends RecyclerView {
     }
 
 
+    public void setRefreshHeaderView(@LayoutRes int refreshHeaderLayoutRes) {
+        ensureRefreshHeaderContainer();
+        final View refreshHeader = LayoutInflater.from(getContext())
+                                                 .inflate(
+                                                         refreshHeaderLayoutRes,
+                                                         mRefreshHeaderContainer,
+                                                         false);
+        if (refreshHeader != null) {
+            setRefreshHeaderView(refreshHeader);
+        }
+    }
+
+
     public void setLoadMoreFooterView(View loadMoreFooterView) {
         if (mLoadMoreFooterView != null) {
             removeLoadMoreFooterView();
@@ -172,6 +194,19 @@ public class UIRecyclerView extends RecyclerView {
             this.mLoadMoreFooterView = loadMoreFooterView;
             ensureLoadMoreFooterContainer();
             mLoadMoreFooterContainer.addView(loadMoreFooterView);
+        }
+    }
+
+
+    public void setLoadMoreFooterView(@LayoutRes int loadMoreFooterLayoutRes) {
+        ensureLoadMoreFooterContainer();
+        final View loadMoreFooter = LayoutInflater.from(getContext())
+                                                  .inflate(
+                                                          loadMoreFooterLayoutRes,
+                                                          mLoadMoreFooterContainer,
+                                                          false);
+        if (loadMoreFooter != null) {
+            setLoadMoreFooterView(loadMoreFooter);
         }
     }
 
@@ -507,7 +542,7 @@ public class UIRecyclerView extends RecyclerView {
 
         int targetHeight = mRefreshHeaderView.getMeasuredHeight();
         int currentHeight = mRefreshHeaderContainer.getMeasuredHeight();
-        startScrollAnimation(300, new AccelerateInterpolator(), currentHeight,
+        startScrollAnimation(400, new AccelerateInterpolator(), currentHeight,
                 targetHeight);
     }
 
@@ -530,12 +565,12 @@ public class UIRecyclerView extends RecyclerView {
     }
 
 
-    public void startScrollRefreshingStatusToDefaultStatus() {
+    private void startScrollRefreshingStatusToDefaultStatus() {
         mRefreshTrigger.onComplete();
 
         final int targetHeight = 0;
         final int currentHeight = mRefreshHeaderContainer.getMeasuredHeight();
-        startScrollAnimation(200, new DecelerateInterpolator(), currentHeight,
+        startScrollAnimation(400, new DecelerateInterpolator(), currentHeight,
                 targetHeight);
     }
 
@@ -593,9 +628,21 @@ public class UIRecyclerView extends RecyclerView {
 
             switch (mStatus) {
                 case STATUS_SWIPING_TO_REFRESH: {
-                    mRefreshHeaderContainer.getLayoutParams().height = 0;
-                    mRefreshHeaderContainer.requestLayout();
-                    setStatus(STATUS_DEFAULT);
+                    if (mIsAutoRefreshing) {
+                        mRefreshHeaderContainer.getLayoutParams().height
+                                = mRefreshHeaderView.getMeasuredHeight();
+                        mRefreshHeaderContainer.requestLayout();
+                        setStatus(STATUS_REFRESHING);
+                        if (mOnRefreshListener != null) {
+                            mOnRefreshListener.onRefresh();
+                            mRefreshTrigger.onRefresh();
+                        }
+                    }
+                    else {
+                        mRefreshHeaderContainer.getLayoutParams().height = 0;
+                        mRefreshHeaderContainer.requestLayout();
+                        setStatus(STATUS_DEFAULT);
+                    }
                 }
                 break;
 
@@ -612,6 +659,7 @@ public class UIRecyclerView extends RecyclerView {
                 break;
 
                 case STATUS_REFRESHING: {
+                    mIsAutoRefreshing = false;
                     mRefreshHeaderContainer.getLayoutParams().height = 0;
                     mRefreshHeaderContainer.requestLayout();
                     setStatus(STATUS_DEFAULT);
@@ -630,7 +678,7 @@ public class UIRecyclerView extends RecyclerView {
     };
 
 
-    public void onFingerUpStartAnimating() {
+    private void onFingerUpStartAnimating() {
         if (mStatus == STATUS_RELEASE_TO_REFRESH) {
             startScrollReleaseStatusToRefreshingStatus();
         }

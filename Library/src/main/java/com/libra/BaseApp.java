@@ -1,6 +1,7 @@
 package com.libra;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -40,6 +41,62 @@ public class BaseApp extends Application {
         CrashManagerConstants.loadFromContext(this);
         CrashManager.registerHandler();
     }
+
+
+    public void dispatchActivityCreated(Activity activity) {
+        activityCreated(activity);
+    }
+
+
+    public void dispatchActivityStarted(Activity activity) {
+        activityStarted(activity);
+    }
+
+
+    public void dispatchActivityRestarted(Activity activity) {
+        activityRestarted(activity);
+    }
+
+
+    public void dispatchActivityResumed(Activity activity) {
+        activityResumed(activity);
+    }
+
+
+    public void dispatchActivityPaused(Activity activity) {
+        activityPaused(activity);
+    }
+
+
+    public void dispatchActivitStoped(Activity activity) {
+        activitStoped(activity);
+    }
+
+
+    public void dispatchActivityDistroyed(Activity activity) {
+        activityDistroyed(activity);
+    }
+
+
+    public void activityCreated(Activity activity) {}
+
+
+    public void activityRestarted(Activity activity) {}
+
+
+    public void activityStarted(Activity activity) {}
+
+
+    public void activityResumed(Activity activity) {}
+
+
+    public void activityPaused(Activity activity) {}
+
+
+    public void activitStoped(Activity activity) {}
+
+
+    private void activityDistroyed(Activity activity) {}
 
 
     /**

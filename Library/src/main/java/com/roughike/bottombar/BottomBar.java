@@ -1033,9 +1033,15 @@ public class BottomBar extends FrameLayout
 
     @Override public void onClick(View v) {
         if (v.getTag().equals(TAG_BOTTOM_BAR_VIEW_INACTIVE)) {
+            int position = findItemPosition(v);
+            if (mListener != null) {
+                if (!mListener.canItemSelected(position)) {
+                    return;
+                }
+            }
             unselectTab(findViewWithTag(TAG_BOTTOM_BAR_VIEW_ACTIVE), true);
             selectTab(v, true);
-            updateSelectedTab(findItemPosition(v));
+            updateSelectedTab(position);
         }
     }
 

@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.libra.BaseApp;
 import com.libra.R;
 import com.libra.utils.AppManager;
 
@@ -27,38 +28,45 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppManager.getAppManager().addActivity(this);
+        ((BaseApp) getApplication()).dispatchActivityCreated(this);
     }
 
 
     @Override protected void onStart() {
         super.onStart();
+        ((BaseApp) getApplication()).dispatchActivityStarted(this);
     }
 
 
     @Override protected void onResume() {
         super.onResume();
         AppManager.getAppManager().setVisibleActivity(this);
+        ((BaseApp) getApplication()).dispatchActivityResumed(this);
     }
 
 
     @Override protected void onPause() {
         super.onPause();
+        ((BaseApp) getApplication()).dispatchActivityPaused(this);
     }
 
 
     @Override protected void onStop() {
         super.onStop();
+        ((BaseApp) getApplication()).dispatchActivitStoped(this);
     }
 
 
     @Override protected void onDestroy() {
         super.onDestroy();
         AppManager.getAppManager().finishActivity(this);
+        ((BaseApp) getApplication()).dispatchActivityDistroyed(this);
     }
 
 
     @Override protected void onRestart() {
         super.onRestart();
+        ((BaseApp) getApplication()).dispatchActivityRestarted(this);
     }
 
 
