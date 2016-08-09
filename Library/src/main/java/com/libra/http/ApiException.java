@@ -96,7 +96,12 @@ public class ApiException extends Exception {
                 err = ctx.getString(R.string.app_run_code_error);
                 break;
             case TYPE_HttpResponseException:
-                err = getMessage();
+                if (getCause() != null) {
+                    err = getCause().getMessage();
+                }
+                else {
+                    err = getMessage();
+                }
                 break;
         }
         return err;

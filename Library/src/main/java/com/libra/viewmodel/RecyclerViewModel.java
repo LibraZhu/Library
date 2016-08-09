@@ -60,8 +60,8 @@ public abstract class RecyclerViewModel extends ViewModel {
                         R.string.http_exception_error);
                 if (e != null) {
                     if (e instanceof ApiException) {
-                        errorMessage = ((ApiException) e).getCause()
-                                                         .getMessage();
+                        errorMessage = ((ApiException) e).getErrorMessage(
+                                context);
                     }
                     else {
                         errorMessage = e.getMessage();
