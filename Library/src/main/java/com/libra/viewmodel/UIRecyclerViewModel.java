@@ -3,6 +3,7 @@ package com.libra.viewmodel;
 import android.content.Context;
 import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import com.libra.R;
 import com.libra.http.ApiException;
 import com.libra.uirecyclerView.UIRecycleViewAdapter;
@@ -34,7 +35,6 @@ public abstract class UIRecyclerViewModel extends ViewModel {
 
     public void autoRefresh() {
         mUIRecyclerView.setRefreshing(true);
-        onRefresh(mUIRecyclerView.getLoadMoreFooterView());
     }
 
 
@@ -97,6 +97,25 @@ public abstract class UIRecyclerViewModel extends ViewModel {
         if (currentPage == 1) {
             ((LoadMoreFooterView) mUIRecyclerView.getLoadMoreFooterView()).setStatus(
                     LoadMoreFooterView.Status.ENPTY);
+        }
+    }
+
+
+    public void empty(boolean isEmpty) {
+        if (isEmpty) {
+            mUIRecyclerView.addEmptyView();
+            if (mUIRecyclerView.getHeaderContainer().getChildCount() == 0) {
+                mUIRecyclerView.getFooterContainer().getLayoutParams().height
+                        = ViewGroup.LayoutParams.MATCH_PARENT;
+            }
+            else {
+                mUIRecyclerView.getFooterContainer().getLayoutParams().height
+                        = ViewGroup.LayoutParams.WRAP_CONTENT;
+            }
+        }
+        else {
+            mUIRecyclerView.removeEmptyView();
+            mUIRecyclerView.getFooterContainer().getLayoutParams().height = 0;
         }
     }
 

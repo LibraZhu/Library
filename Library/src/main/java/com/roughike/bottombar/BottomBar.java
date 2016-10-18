@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -653,6 +654,7 @@ public class BottomBar extends FrameLayout
                 mItemContainer.getChildAt(tabPosition), backgroundColor);
         badge.setTag(TAG_BADGE + tabPosition);
         badge.setCount(initialCount);
+        badge.setVisibility(GONE);
 
         if (mBadgeMap == null) {
             mBadgeMap = new HashMap<>();
@@ -1155,7 +1157,10 @@ public class BottomBar extends FrameLayout
                     R.id.bb_bottom_bar_icon);
 
             icon.setImageDrawable(bottomBarItemBase.getIcon(mContext));
-
+            icon.setTag(R.id.tag_bottombar_second,
+                    bottomBarItemBase.getIconSelected(mContext));
+            icon.setTag(R.id.tag_bottombar_first,
+                    bottomBarItemBase.getIcon(mContext));
             if (!mIsTabletMode) {
                 TextView title = (TextView) bottomBarTab.findViewById(
                         R.id.bb_bottom_bar_title);
@@ -1271,7 +1276,14 @@ public class BottomBar extends FrameLayout
             int activeColor = mCustomActiveTabColor != -1
                               ? mCustomActiveTabColor
                               : mPrimaryColor;
-            icon.setColorFilter(activeColor);
+            Object o = icon.getTag(R.id.tag_bottombar_second);
+            if (o != null && o instanceof Drawable) {
+                icon.clearColorFilter();
+                icon.setImageDrawable((Drawable) o);
+            }
+            else {
+                icon.setColorFilter(activeColor);
+            }
 
             if (title != null) {
                 title.setTextColor(activeColor);
@@ -1333,6 +1345,10 @@ public class BottomBar extends FrameLayout
         if (!mIsShiftingMode || mIsTabletMode) {
             int inActiveColor = mIsDarkTheme ? mWhiteColor : mInActiveColor;
             icon.setColorFilter(inActiveColor);
+            Object o = icon.getTag(R.id.tag_bottombar_first);
+            if (o != null & o instanceof Drawable) {
+                icon.setImageDrawable((Drawable) o);
+            }
 
             if (title != null) {
                 title.setTextColor(inActiveColor);

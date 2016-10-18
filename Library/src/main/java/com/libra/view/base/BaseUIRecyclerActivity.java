@@ -91,7 +91,8 @@ public abstract class BaseUIRecyclerActivity<VM extends UIRecyclerViewModel>
      * 添加刷新
      */
     protected void addRefresh() {
-        mUIRecyclerView.setRefreshHeaderView(new ClassicRefreshHeaderView(this));
+        mUIRecyclerView.setRefreshHeaderView(
+                new ClassicRefreshHeaderView(this));
         mUIRecyclerView.setRefreshEnabled(true);
         mUIRecyclerView.setOnRefreshListener(this);
     }
@@ -152,6 +153,14 @@ public abstract class BaseUIRecyclerActivity<VM extends UIRecyclerViewModel>
      */
     protected void addFooter(View footerView) {
         mUIRecyclerView.addFooterView(footerView);
+    }
+
+
+    /**
+     * 添加footer
+     */
+    public void addEmpty(View emptyView) {
+        mUIRecyclerView.setEmptyView(emptyView);
     }
 
 

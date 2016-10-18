@@ -160,6 +160,14 @@ public abstract class BaseUIRecyclerFragment<VM extends UIRecyclerViewModel>
 
 
     /**
+     * 添加footer
+     */
+    public void addEmpty(View emptyView) {
+        mUIRecyclerView.setEmptyView(emptyView);
+    }
+
+
+    /**
      * onItemClick 回调，事件传递给viewmodel处理
      */
     @Override public void onItemClick(int position) {

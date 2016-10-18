@@ -39,23 +39,40 @@ import android.support.v4.content.ContextCompat;
  */
 class BottomBarItemBase {
     protected int iconResource;
+    protected int iconResourceSelected;
     protected Drawable icon;
+    protected Drawable iconSelected;
     protected int titleResource;
     protected String title;
     protected int color;
-    
+
+
     protected Drawable getIcon(Context context) {
         if (this.iconResource != 0) {
             return ContextCompat.getDrawable(context, this.iconResource);
-        } else {
+        }
+        else {
             return this.icon;
         }
     }
 
+
+    protected Drawable getIconSelected(Context context) {
+        if (this.iconResourceSelected != 0) {
+            return ContextCompat.getDrawable(context,
+                    this.iconResourceSelected);
+        }
+        else {
+            return this.iconSelected;
+        }
+    }
+
+
     protected String getTitle(Context context) {
         if (this.titleResource != 0) {
             return context.getString(this.titleResource);
-        } else {
+        }
+        else {
             return this.title;
         }
     }

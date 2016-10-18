@@ -60,6 +60,8 @@ public class UIRecyclerView extends RecyclerView {
 
     private View mLoadMoreFooterView;
 
+    private View emptyView;
+
 
     public UIRecyclerView(Context context) {
         this(context, null);
@@ -211,6 +213,16 @@ public class UIRecyclerView extends RecyclerView {
     }
 
 
+    public void setEmptyView(View emptyView) {
+        this.emptyView = emptyView;
+    }
+
+
+    public View getEmptyView() {
+        return emptyView;
+    }
+
+
     public View getRefreshHeaderView() {
         return mRefreshHeaderView;
     }
@@ -250,6 +262,19 @@ public class UIRecyclerView extends RecyclerView {
         if (adapter != null) {
             adapter.notifyItemChanged(adapter.getItemCount() - 2);
         }
+    }
+
+
+    public void addEmptyView() {
+        removeEmptyView();
+        getFooterContainer().addView(emptyView,
+                new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+    }
+
+
+    public void removeEmptyView() {
+        getFooterContainer().removeAllViews();
     }
 
 

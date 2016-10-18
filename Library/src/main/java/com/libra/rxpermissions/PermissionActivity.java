@@ -11,11 +11,33 @@ import com.libra.view.base.BaseActivity;
  */
 @TargetApi(Build.VERSION_CODES.M) public class PermissionActivity
         extends BaseActivity {
+    private static final String KEY_ORIGINAL_PID = "key_original_pid";
+    private int mOriginalProcessId;
+
+
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
             handleIntent(getIntent());
+            mOriginalProcessId = android.os.Process.myPid();
         }
+        else {
+            mOriginalProcessId = savedInstanceState.getInt(KEY_ORIGINAL_PID,
+                    mOriginalProcessId);
+
+            boolean restoredInAnotherProcess = mOriginalProcessId !=
+                    android.os.Process.myPid();
+
+            if (restoredInAnotherProcess) {
+                finish();
+            }
+        }
+    }
+
+
+    @Override protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_ORIGINAL_PID, mOriginalProcessId);
     }
 
 
