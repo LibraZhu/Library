@@ -171,7 +171,7 @@ public class ImageUtil {
         Intent mediaScanIntent = new Intent(
                 Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File file = new File(imgFileName);
-        Uri contentUri = Uri.fromFile(file);
+        Uri contentUri = URIUtil.fromFile(ctx, file);
         mediaScanIntent.setData(contentUri);
         ctx.sendBroadcast(mediaScanIntent);
     }

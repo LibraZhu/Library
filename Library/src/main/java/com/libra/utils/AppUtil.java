@@ -43,7 +43,8 @@ public class AppUtil {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file),
+        Uri contentUri = URIUtil.fromFile(context, file);
+        intent.setDataAndType(contentUri,
                 "application/vnd.android.package-archive");
         context.startActivity(intent);
     }

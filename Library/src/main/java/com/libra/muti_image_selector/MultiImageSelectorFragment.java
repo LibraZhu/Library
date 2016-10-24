@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -35,6 +34,7 @@ import com.libra.muti_image_selector.bean.Image;
 import com.libra.muti_image_selector.utils.FileUtils;
 import com.libra.muti_image_selector.utils.ScreenUtils;
 import com.libra.rxpermissions.RxPermissions;
+import com.libra.utils.URIUtil;
 import com.libra.view.base.BaseFragment;
 import java.io.File;
 import java.io.IOException;
@@ -395,7 +395,7 @@ public class MultiImageSelectorFragment extends BaseFragment {
             }
             if (mTmpFile != null && mTmpFile.exists()) {
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(mTmpFile));
+                        URIUtil.fromFile(getContext(), mTmpFile));
                 startActivityForResult(cameraIntent, REQUEST_CAMERA);
             }
             else {

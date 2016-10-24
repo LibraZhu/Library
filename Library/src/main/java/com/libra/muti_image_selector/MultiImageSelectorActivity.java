@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.libra.R;
+import com.libra.utils.URIUtil;
 import com.libra.view.base.BaseActivity;
 import java.io.File;
 import java.util.ArrayList;
@@ -190,8 +191,9 @@ public class MultiImageSelectorActivity extends BaseActivity
         if (imageFile != null) {
 
             // notify system
+            Uri contentUri = URIUtil.fromFile(this, imageFile);
             sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                    Uri.fromFile(imageFile)));
+                    contentUri));
 
             Intent data = new Intent();
             resultList.add(imageFile.getAbsolutePath());
