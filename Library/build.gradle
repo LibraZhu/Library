@@ -3,11 +3,11 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '24.0.2'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.0'
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 24
+        minSdkVersion 15
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }
@@ -50,15 +50,15 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.9'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.google.code.gson:gson:2.7'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:design:25.0.0'
 }
 
 def siteUrl = 'https://github.com/LibraZhu/Library'
 // 项目的主页地址，我这里是我的PickerView项目在github的链接地址
 def gitUrl = 'https://github.com/LibraZhu/Library.git'
 // 项目 git 地址，我这里同样是用Github上的git地址
-version = "0.5.6"
+version = "0.5.9"
 group = "com.github.libra" // 组名称，这个相当于依赖的时候
 // .0.1'
 // “:”号前面的前缀

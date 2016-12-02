@@ -140,6 +140,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
+    public void showProgressDialog() {
+        showProgressDialog("");
+    }
+
+
     public void showProgressDialog(int resId) {
         showProgressDialog(getResources().getString(resId));
     }

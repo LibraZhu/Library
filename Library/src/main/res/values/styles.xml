@@ -8,12 +8,10 @@
         <item name="actionMenuTextAppearance">
             @style/Theme.AppTheme.ActionBar.menu
         </item>
-        <item name="titleTextStyle">@style/Theme.AppTheme.ActionBar.Title</item>
     </style>
 
     <style name="Theme.AppTheme.ActionBar.Title"
         parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:gravity">center</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 

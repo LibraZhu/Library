@@ -6,16 +6,16 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
         <activity
-            android:name=".touchgallery.GalleryActivity"
+            android:name="com.libra.touchgallery.GalleryActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"/>
         <activity
-            android:name=".muti_image_selector.MultiImageSelectorActivity"
+            android:name="com.libra.muti_image_selector.MultiImageSelectorActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"
             android:configChanges="orientation|screenSize"/>
         <activity
-            android:name=".rxpermissions.PermissionActivity"
+            android:name="com.libra.rxpermissions.PermissionActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"
             android:theme="@style/PermissionActivityTheme"/>

@@ -2,6 +2,7 @@ package com.libra.view.widget;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.Spannable;
@@ -15,10 +16,9 @@ import android.view.View.OnFocusChangeListener;
 import android.view.animation.Animation;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.EditText;
 import com.libra.R;
 
-public class ClearEditText extends EditText implements OnFocusChangeListener,
+public class ClearEditText extends TextInputEditText implements OnFocusChangeListener,
         TextWatcher
 {
     private Drawable mClearDrawable;
