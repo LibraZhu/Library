@@ -63,7 +63,6 @@ public abstract class BaseUIRecyclerActivity<VM extends UIRecyclerViewModel>
         mUIRecyclerView.setIAdapter(adapter);
         getViewModel().mAdapter = adapter;
         getViewModel().mUIRecyclerView = mUIRecyclerView;
-        getViewModel().onCreate();
     }
 
 
@@ -193,7 +192,12 @@ public abstract class BaseUIRecyclerActivity<VM extends UIRecyclerViewModel>
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        onCreateBind();
+        getViewModel().onCreate();
     }
+
+
+    public abstract void onCreateBind();
 
 
     @Override protected void onStart() {

@@ -60,7 +60,6 @@ public abstract class BaseRecyclerActivity<VM extends RecyclerViewModel>
         mEasyRecyclerView.setAdapter(adapter);
         getViewModel().mAdapter = adapter;
         getViewModel().mEasyRecyclerView = mEasyRecyclerView;
-        getViewModel().onCreate();
     }
 
 
@@ -99,7 +98,6 @@ public abstract class BaseRecyclerActivity<VM extends RecyclerViewModel>
         if (adapter != null) {
             adapter.setMore(R.layout.view_more, this);
             adapter.setNoMore(R.layout.view_nomore);
-
             adapter.setError(R.layout.view_error)
                    .setOnClickListener(new View.OnClickListener() {
                        @Override public void onClick(View v) {
@@ -183,7 +181,12 @@ public abstract class BaseRecyclerActivity<VM extends RecyclerViewModel>
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        onCreateBind();
+        getViewModel().onCreate();
     }
+
+
+    public abstract void onCreateBind();
 
 
     @Override protected void onStart() {

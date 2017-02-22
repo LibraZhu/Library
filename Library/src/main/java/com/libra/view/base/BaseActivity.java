@@ -108,7 +108,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     protected void initTollBar() {
-        toolbar = (Toolbar) $(R.id.toolbar);
+        toolbar = $(R.id.toolbar);
         if (toolbar != null) {
             this.setSupportActionBar(toolbar);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {

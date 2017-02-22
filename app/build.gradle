@@ -1,27 +1,135 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'me.tatarka.retrolambda'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.3.1'
+    }
+}
+
+// Required because retrolambda is on maven central
+repositories {
+    mavenCentral()
+}
+
+def releaseTime() {
+    return new Date().format("yyyyMMddHHmm")
+}
+
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
 
     defaultConfig {
-        applicationId "com.libra"
-        minSdkVersion 14
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        applicationId "com.ddj.cloudphone"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 100
+        versionName "1.0.0"
+        // dex突破65535的限制
+        multiDexEnabled true
     }
-    buildTypes {
+    dataBinding {
+        enabled = true
+    }
+
+    lintOptions {
+        abortOnError false
+        disable 'MissingTranslation'
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("../librakeybord.jks")
+            storePassword "libra2015"
+            keyAlias "libra"
+            keyPassword "libra2015"
+        }
+
         release {
+            storeFile file("../librakeybord.jks")
+            storePassword "libra2015"
+            keyAlias "libra"
+            keyPassword "libra2015"
+        }
+    }
+
+    buildTypes {
+        debug {
+            // 显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            zipAlignEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.debug
+            //混淆
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro'
         }
+
+        release {
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            zipAlignEnabled true
+            shrinkResources true
+            //混淆
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro'
+
+            signingConfig signingConfigs.release
+        }
+    }
+
+    productFlavors {
+        develop {}
+        ddj {}
+    }
+
+    productFlavors.all {
+        if ("develop".equalsIgnoreCase(name)) {
+            manifestPlaceholders =
+                    [SERVER_VALUE : "${project.SERVER_VALUE_DEVELOP}",
+                     CHANNEL_VALUE: name]
+        } else {
+            manifestPlaceholders =
+                    [SERVER_VALUE : "${project.SERVER_VALUE_RELEASE}",
+                     CHANNEL_VALUE: name]
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.processManifest.doLast {
+                if ("develop".equalsIgnoreCase(
+                        "${variant.productFlavors[0].name}")) {
+                } else {
+                    def outputFile = output.outputFile
+                    if (outputFile != null &&
+                            outputFile.name.endsWith('.apk')) {
+                        def fileName = "${releaseTime()}_ddj_cloudphone_v${defaultConfig.versionName}_channel_${variant.productFlavors[0].name}.apk"
+                        output.outputFile =
+                                new File(outputFile.parent, fileName)
+                    }
+                }
+            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':Library')
+    compile files('libs/flame.jar')
+    compile 'com.orhanobut:logger:1.15'
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 }

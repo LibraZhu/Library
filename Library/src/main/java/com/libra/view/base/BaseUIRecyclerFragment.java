@@ -198,9 +198,15 @@ public abstract class BaseUIRecyclerFragment<VM extends UIRecyclerViewModel>
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        View view = onCreateBindView(inflater, container, savedInstanceState);
         getViewModel().onCreateView();
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return view;
     }
+
+
+    public abstract View onCreateBindView(LayoutInflater inflater,
+                                          @Nullable ViewGroup container,
+                                          @Nullable Bundle savedInstanceState);
 
 
     @Override public void onDestroyView() {

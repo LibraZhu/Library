@@ -85,7 +85,7 @@ public abstract class RecyclerViewModel extends ViewModel {
                     mEasyRecyclerView.setRefreshing(false);
                 }
             }
-        }, 100);
+        }, 50);
     }
 
 
