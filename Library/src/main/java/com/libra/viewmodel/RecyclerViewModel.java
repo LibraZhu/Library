@@ -6,7 +6,7 @@ import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.libra.R;
 import com.libra.http.ApiException;
-import com.libra.view.base.BaseActivity;
+import com.libra.utils.ToastUtil;
 
 /**
  * Created by libra on 16/3/9 上午9:58.
@@ -53,6 +53,9 @@ public abstract class RecyclerViewModel extends ViewModel {
     }
 
 
+    /**
+     * 刷新，加载出错调用
+     */
     public void error(Throwable e) {
         {
             if (currentPage == 1) {
@@ -67,7 +70,7 @@ public abstract class RecyclerViewModel extends ViewModel {
                         errorMessage = e.getMessage();
                     }
                 }
-                ((BaseActivity) context).showShortToast(errorMessage);
+                ToastUtil.showToast(context,errorMessage);
                 refreshComplete();
             }
             else {
